@@ -190,15 +190,15 @@ def main(session):
         screen.blit(background.image, background.rect)
 
         # Paint blocks
-        if criteria & EVAL_NOTE:
+        if criteria in [3, 7, 11, 15]:
             for block in blocks:
                 screen.blit(block.image, block.rect)
 
         # Paint the redline
-        if criteria & EVAL_TIME:
+        if criteria in [9, 13, 15]:
             screen.blit(redline.image, redline.rect)
         # Paint the scale
-        if criteria & EVAL_SCALE:
+        if criteria in [5,7,11,13,15]:
             screen.blit(scale.image, scale.rect)
 
         # Send everything to screen
