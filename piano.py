@@ -162,15 +162,16 @@ def main(session):
                     time.time(),
                 ])
 
-                if not evaluated and correct_ans:
-                    sounds[key_map[event.unicode]].play()
-                print(new_column, new_progress)
-                if not evaluated and not WHEN:
-                    new_column = (new_column + 1) % 4
+                if not evaluated :
+                    if correct_ans:
+                        sounds[key_map[event.unicode]].play()
 
-                    if new_column == 0:
-                        new_progress = 0
-                        progress = 1
+                    if  not WHEN:
+                        new_column = (new_column + 1) % 4
+
+                        if new_column == 0:
+                            new_progress = 0
+                            progress = 1
 
                 evaluated = True
             elif event.type == QUIT:
