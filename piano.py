@@ -166,13 +166,27 @@ def main(session):
                 # Handles window close button
                 return
 
-        new_column = 1
         # Move the redline
         if move:
             new_progress = redline.move()
 
             if WHEN:
                 new_column = redline.get_column()
+            else:
+                new_column = 0
+
+        if progress != new_progress: # progress has changed
+            # Essay finished, report to session
+            if new_progress < progress:
+                session.results += csv_result(evaluation)
+                blocks     = nex_blocks(session)
+                essay      = gen_essay(blocks)
+                evaluation = []
+                essay_num += 1
+
+                if not blocks:
+                    break
+            progress = new_progress
 
         # Change the column and the scale
         if new_column != column and new_column > -1:
@@ -190,18 +204,6 @@ def main(session):
             column = new_column
             scale = scales[blocks[column].scale]
 
-        if progress != new_progress: # progress has changed
-            # Essay finished, report to session
-            if new_progress < progress:
-                session.results += csv_result(evaluation)
-                blocks     = nex_blocks(session)
-                essay      = gen_essay(blocks)
-                evaluation = []
-                essay_num += 1
-
-                if not blocks:
-                    break
-            progress = new_progress
 
         # Paint background
         screen.fill((255, 255, 255))
