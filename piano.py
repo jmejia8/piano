@@ -130,6 +130,9 @@ def main(session):
     WHEN  = criteria in [9, 11, 13, 15]
     WHERE = criteria in [5,  7, 13, 15]
 
+    new_column = 0
+    new_progress = progress
+
     # Event loop
     while True:
         # tick to 60 fps
@@ -161,6 +164,14 @@ def main(session):
 
                 if not evaluated and correct_ans:
                     sounds[key_map[event.unicode]].play()
+                print(new_column, new_progress)
+                if not evaluated and not WHEN:
+                    new_column = (new_column + 1) % 4
+
+                    if new_column == 0:
+                        new_progress = 0
+                        progress = 1
+
                 evaluated = True
             elif event.type == QUIT:
                 # Handles window close button
@@ -168,12 +179,11 @@ def main(session):
 
         # Move the redline
         if move:
-            new_progress = redline.move()
 
             if WHEN:
+                new_progress = redline.move()
                 new_column = redline.get_column()
-            else:
-                new_column = 0
+
 
         if progress != new_progress: # progress has changed
             # Essay finished, report to session
