@@ -22,7 +22,7 @@ def nex_blocks(session):
         return Block(tile_positions[note_tuple[1][0], note_tuple[0]], note_tuple[1][0], note_tuple[1][1])
     return list(map(gen_blocks, enumerate(islice(session, 4))))
 
-def eval_key(block, evaluated, note, scale):
+def eval_key(block, evaluated, note, scale, correspondence):
     """Compute the evaluation of a click"""
     res = 0
     if note == block.note:
@@ -31,7 +31,20 @@ def eval_key(block, evaluated, note, scale):
         res |= EVAL_SCALE
     if not evaluated:
         res |= EVAL_TIME
-    return res
+
+    how, when, where = correspondence
+
+    correct = True
+    if how: 
+        correct &= note == block.note
+    if when: 
+        correct &= not evaluated
+    if where: 
+        correct &= scale == block.scale
+
+
+
+    return res, correct
 
 def gen_essay(blocks):
     """Given a list of block objects return the evaluation matrix for this essay
@@ -113,6 +126,10 @@ def main(session):
     criteria     = session.get_criteria()
     essay_num    = 1
 
+    HOW   = criteria in [3,  7, 11, 15] 
+    WHEN  = criteria in [9, 11, 13, 15]
+    WHERE = criteria in [5,  7, 13, 15]
+
     # Event loop
     while True:
         # tick to 60 fps
@@ -124,11 +141,12 @@ def main(session):
                 return
             elif event.type == KEYDOWN and event.unicode in sound_keys and column>-1:
                 clicked_note, clicked_scale = key_map[event.unicode]
-                score = eval_key(
+                score, correct_ans = eval_key(
                     blocks[column],
                     evaluated,
                     clicked_note,
-                    clicked_scale
+                    clicked_scale,
+                    (HOW, WHEN, WHERE)
                 )
 
                 evaluation.append([
@@ -141,7 +159,7 @@ def main(session):
                     time.time(),
                 ])
 
-                if (score & criteria) == criteria:
+                if not evaluated and correct_ans:
                     sounds[key_map[event.unicode]].play()
                 evaluated = True
             elif event.type == QUIT:
@@ -153,12 +171,12 @@ def main(session):
         if move:
             new_progress = redline.move()
 
-            if criteria & EVAL_TIME:
+            if WHEN:
                 new_column = redline.get_column()
 
         # Change the column and the scale
         if new_column != column and new_column > -1:
-            if not evaluated and column>-1: # Send an empty evaluation
+            if not evaluated and column > -1: # Send an empty evaluation
                 evaluation.append([
                     essay_num,
                     blocks[column].note,
@@ -190,15 +208,15 @@ def main(session):
         screen.blit(background.image, background.rect)
 
         # Paint blocks
-        if criteria in [3, 7, 11, 15]:
+        if HOW:
             for block in blocks:
                 screen.blit(block.image, block.rect)
 
         # Paint the redline
-        if criteria in [9, 13, 15]:
+        if WHEN:
             screen.blit(redline.image, redline.rect)
         # Paint the scale
-        if criteria in [5,7,11,13,15]:
+        if WHERE:
             screen.blit(scale.image, scale.rect)
 
         # Send everything to screen
