@@ -196,6 +196,7 @@ def main(session):
                 essay_num += 1
 
                 if not blocks:
+                    session.session['level'] += 1
                     break
             progress = new_progress
 
