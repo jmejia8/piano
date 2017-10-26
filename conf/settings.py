@@ -1,6 +1,6 @@
 LEVELS = {
     "level0": {
-        "criteria": 8,
+        "criteria": 0,
         "screens": [
             "general1",
             "general2",
@@ -10,7 +10,7 @@ LEVELS = {
         "file": "level0.csv"
     },
     "level1": {
-        "criteria": 8,
+        "criteria": 9,
         "screens": [
             "general1",
             "general2",
@@ -21,7 +21,7 @@ LEVELS = {
         "file": "level1.csv"
     },
     "level2": {
-        "criteria": 8,
+        "criteria": 5,
         "screens": [
             "general1",
             "general2",
@@ -32,7 +32,7 @@ LEVELS = {
         "file": "level2.csv"
     },
     "level3": {
-        "criteria": 8,
+        "criteria": 13,
         "screens": [
             "general1",
             "general2",
@@ -44,7 +44,7 @@ LEVELS = {
         "file": "level3.csv"
     },
     "level4": {
-        "criteria": 8,
+        "criteria": 3,
         "screens": [
             "general1",
             "general2",
@@ -55,7 +55,7 @@ LEVELS = {
         "file": "level4.csv"
     },
     "level5": {
-        "criteria": 8,
+        "criteria": 11,
         "screens": [
             "general1",
             "general2",
@@ -67,7 +67,7 @@ LEVELS = {
         "file": "level5.csv"
     },
     "level6": {
-        "criteria": 8,
+        "criteria": 7,
         "screens": [
             "general1",
             "general2",
@@ -79,7 +79,7 @@ LEVELS = {
         "file": "level6.csv"
     },
     "level7": {
-        "criteria": 8,
+        "criteria": 15,
         "screens": [
             "general1",
             "general2",
@@ -92,7 +92,7 @@ LEVELS = {
         "file": "level7.csv"
     },
     "level8": {
-        "criteria": 8,
+        "criteria": 15,
         "screens": [
             "general1",
             "general2",
@@ -119,25 +119,25 @@ LEVELS = {
 }
 
 GROUPS = {
-    "aislado": [
+    "Aislado": [
         "level0",
         "level1",
         "level2",
         "level4",
+        "level8",
     ],
-    "progresivo": [
+    "Aditivo": [
         "level0",
-        "level1",
+        "level2",
         "level3",
+        "level7",
         "level8",
     ],
-    "integral": [
+    "Integral": [
         "level0",
+        "level7",
+        "level7",
+        "level7",
         "level8",
-        "level8",
-        "level8",
-    ],
-    "prueba": [
-        "sin_cuando",
-    ]*100,
+    ]
 }
