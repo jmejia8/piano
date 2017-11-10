@@ -143,7 +143,6 @@ def main(session):
         for event in pygame.event.get():
             if event.type == KEYDOWN and event.key == 27:
                 # ESC key, exit game
-                session.session['level'] += 1
                 return
             elif event.type == KEYDOWN and event.unicode in sound_keys and column>-1:
                 clicked_note, clicked_scale = key_map[event.unicode]
@@ -184,7 +183,6 @@ def main(session):
                 evaluated = True
             elif event.type == QUIT:
                 # Handles window close button
-                session.session['level'] += 1
                 return
 
         # Move the redline
@@ -209,8 +207,11 @@ def main(session):
                     passLevel   = True
                     countScreen = 1
 
-                if not blocks or passLevel:
+                if passLevel:
                     session.session['level'] += 1
+                    break
+
+                if not blocks 
                     break
 
             progress = new_progress
