@@ -125,6 +125,8 @@ def main(session):
     essay        = gen_essay(blocks)
     criteria     = session.get_criteria()
     essay_num    = 1
+    countScreen  = 1
+    passLevel    = True
 
     HOW   = criteria in [3,  7, 11, 15] 
     WHEN  = criteria in [9, 11, 13, 15]
@@ -141,6 +143,7 @@ def main(session):
         for event in pygame.event.get():
             if event.type == KEYDOWN and event.key == 27:
                 # ESC key, exit game
+                session.session['level'] += 1
                 return
             elif event.type == KEYDOWN and event.unicode in sound_keys and column>-1:
                 clicked_note, clicked_scale = key_map[event.unicode]
@@ -159,12 +162,17 @@ def main(session):
                     clicked_note,
                     clicked_scale,
                     score,
+                    1,
                     time.time(),
                 ])
-
+                
                 if not evaluated :
                     if correct_ans:
                         sounds[key_map[event.unicode]].play()
+                    else:
+                        passLevel = False
+                        countScreen = 10
+                    
 
                     if  not WHEN:
                         new_column = (new_column + 1) % 4
@@ -176,6 +184,7 @@ def main(session):
                 evaluated = True
             elif event.type == QUIT:
                 # Handles window close button
+                session.session['level'] += 1
                 return
 
         # Move the redline
@@ -194,10 +203,17 @@ def main(session):
                 essay      = gen_essay(blocks)
                 evaluation = []
                 essay_num += 1
+                countScreen += 1
+
 
                 if not blocks:
-                    session.session['level'] += 1
+                    if passLevel:
+                        session.session['level'] += 1
                     break
+
+                if countScreen > 10:
+                    passLevel   = True
+                    countScreen = 1
             progress = new_progress
 
         # Change the column and the scale
@@ -211,7 +227,9 @@ def main(session):
                     None,
                     0,
                     0,
+                    0,
                 ])
+                passLevel = False
             evaluated = False
             column = new_column
             scale = scales[blocks[column].scale]
