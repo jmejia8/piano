@@ -126,7 +126,7 @@ def main(session):
     criteria     = session.get_criteria()
     essay_num    = 1
     countScreen  = 1
-    passLevel    = True
+    passLevel    = False
 
     HOW   = criteria in [3,  7, 11, 15] 
     WHEN  = criteria in [9, 11, 13, 15]
@@ -171,7 +171,7 @@ def main(session):
                         sounds[key_map[event.unicode]].play()
                     else:
                         passLevel = False
-                        countScreen = 10
+                        countScreen = 1
                     
 
                     if  not WHEN:
@@ -205,15 +205,14 @@ def main(session):
                 essay_num += 1
                 countScreen += 1
 
-
-                if not blocks:
-                    if passLevel:
-                        session.session['level'] += 1
-                    break
-
                 if countScreen > 10:
                     passLevel   = True
                     countScreen = 1
+
+                if not blocks or passLevel:
+                    session.session['level'] += 1
+                    break
+
             progress = new_progress
 
         # Change the column and the scale
