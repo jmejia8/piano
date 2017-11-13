@@ -211,7 +211,7 @@ def main(session):
                     session.session['level'] += 1
                     break
 
-                if not blocks 
+                if not blocks :
                     break
 
             progress = new_progress
