@@ -214,6 +214,10 @@ def main(session):
                 if not blocks :
                     break
 
+                if WHEN and not evaluated:
+                    passLevel = False
+                    countScreen = 1
+
             progress = new_progress
 
         # Change the column and the scale
