@@ -163,6 +163,7 @@ def main(session):
                     score,
                     1,
                     time.time(),
+                    score + 1,
                 ])
                 
                 if not evaluated :
@@ -229,6 +230,7 @@ def main(session):
                     blocks[column].scale,
                     None,
                     None,
+                    0,
                     0,
                     0,
                     0,
