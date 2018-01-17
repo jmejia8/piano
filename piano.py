@@ -127,6 +127,8 @@ def main(session):
     essay_num    = 1
     countScreen  = 1
     passLevel    = False
+    startTime    = time.time()
+    firstTime    = True 
 
     HOW   = criteria in [3,  7, 11, 15] 
     WHEN  = criteria in [9, 11, 13, 15]
@@ -164,7 +166,9 @@ def main(session):
                     1,
                     time.time(),
                     score + 1,
+                    time.time() - startTime
                 ])
+                startTime = time.time()
                 
                 if not evaluated :
                     if correct_ans:
@@ -223,6 +227,9 @@ def main(session):
 
         # Change the column and the scale
         if new_column != column and new_column > -1:
+            if firstTime:
+                startTime = time.time()
+                firstTime = False
             if not evaluated and column > -1: # Send an empty evaluation
                 evaluation.append([
                     essay_num,
@@ -230,6 +237,7 @@ def main(session):
                     blocks[column].scale,
                     None,
                     None,
+                    0,
                     0,
                     0,
                     0,
